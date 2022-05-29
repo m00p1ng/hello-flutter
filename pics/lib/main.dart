@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
+import 'src/app.dart';
 
 void main() {
-  var app = MaterialApp(
-    home: Text('Hi there mooping!'),
-  );
-
-  runApp(app);
+  runApp(const App());
 }
