@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/models/task.dart';
-import 'package:habit_tracker/ui/task/task_with_name.dart';
+import 'package:habit_tracker/ui/task/task_with_name_loader.dart';
 
 class TasksGrid extends StatelessWidget {
   const TasksGrid({required this.tasks});
@@ -19,7 +19,7 @@ class TasksGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         final task = tasks[index];
 
-        return TaskWithName(task: task);
+        return TaskWithNameLoader(task: task);
       },
       itemCount: tasks.length,
     );
