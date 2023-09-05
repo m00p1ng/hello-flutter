@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/constants/text_styles.dart';
-import 'package:habit_tracker/models/task_preset.dart';
+import 'package:habit_tracker/models/task.dart';
 import 'package:habit_tracker/ui/task/animated_task.dart';
 import 'package:habit_tracker/ui/theming/app_theme.dart';
 
 class TaskWithName extends StatelessWidget {
   const TaskWithName({required this.task});
-  final TaskPreset task;
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
