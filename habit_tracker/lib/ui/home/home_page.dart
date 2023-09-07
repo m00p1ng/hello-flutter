@@ -11,9 +11,10 @@ class HomePage extends StatelessWidget {
     return Consumer(builder: (context, ref, child) {
       final dataStore = ref.watch(dataStoreProvider);
       return ValueListenableBuilder(
-        valueListenable: dataStore.tasksListenable(),
+        valueListenable: dataStore.frontTasksListenable(),
         builder: (_, Box<Task> box, __) => TasksGridPage(
           tasks: box.values.toList(),
+          onFlip: () {},
         ),
       );
     });
