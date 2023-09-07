@@ -16,6 +16,7 @@ class TasksGridPage extends StatelessWidget {
       body: SafeArea(
         child: TasksGridContents(
           tasks: tasks,
+          onFlip: onFlip,
         ),
       ),
     );

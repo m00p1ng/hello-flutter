@@ -4,17 +4,32 @@ import 'package:habit_tracker/models/task.dart';
 import 'package:habit_tracker/presistence/hive_data_store.dart';
 import 'package:habit_tracker/ui/home/tasks_grid_page.dart';
 import 'package:hive/hive.dart';
+import 'package:page_flip_builder/page_flip_builder.dart';
 
 class HomePage extends StatelessWidget {
+  final _pageFlipKey = GlobalKey<PageFlipBuilderState>();
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       final dataStore = ref.watch(dataStoreProvider);
-      return ValueListenableBuilder(
-        valueListenable: dataStore.frontTasksListenable(),
-        builder: (_, Box<Task> box, __) => TasksGridPage(
-          tasks: box.values.toList(),
-          onFlip: () {},
+      return Container(
+        color: Colors.black,
+        child: PageFlipBuilder(
+          key: _pageFlipKey,
+          frontBuilder: (_) => ValueListenableBuilder(
+            valueListenable: dataStore.frontTasksListenable(),
+            builder: (_, Box<Task> box, __) => TasksGridPage(
+              tasks: box.values.toList(),
+              onFlip: () => _pageFlipKey.currentState?.flip(),
+            ),
+          ),
+          backBuilder: (_) => ValueListenableBuilder(
+            valueListenable: dataStore.backTasksListenable(),
+            builder: (_, Box<Task> box, __) => TasksGridPage(
+              tasks: box.values.toList(),
+              onFlip: () => _pageFlipKey.currentState?.flip(),
+            ),
+          ),
         ),
       );
     });
