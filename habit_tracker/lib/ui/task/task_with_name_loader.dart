@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_tracker/models/task.dart';
 import 'package:habit_tracker/models/task_state.dart';
-import 'package:habit_tracker/presistence/hive_data_store.dart';
+import 'package:habit_tracker/persistence/hive_data_store.dart';
 import 'package:habit_tracker/ui/task/task_with_name.dart';
 import 'package:hive/hive.dart';
 
