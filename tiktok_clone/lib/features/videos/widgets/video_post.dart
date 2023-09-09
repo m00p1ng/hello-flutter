@@ -4,8 +4,9 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
-import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:media_kit_video/media_kit_video.dart';
 
 class VideoPost extends StatefulWidget {
   final Function onVideoFinished;
@@ -24,7 +25,8 @@ class VideoPost extends StatefulWidget {
 
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
-  late final VideoPlayerController _videoPlayerController;
+  late final player = Player();
+  late final controller = VideoController(player);
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -32,21 +34,15 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
 
-  void _onVideoChange() {
-    if (_videoPlayerController.value.isInitialized) {
-      if (_videoPlayerController.value.duration ==
-          _videoPlayerController.value.position) {
-        widget.onVideoFinished();
-      }
-    }
-  }
-
   void _initVideoPlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.asset("assets/videos/video.mp4");
-    await _videoPlayerController.initialize();
-    await _videoPlayerController.setLooping(true);
-    _videoPlayerController.addListener(_onVideoChange);
+    player.open(Media('assets/videos/video.mp4'));
+    player.stream.completed.listen(
+      (bool completed) {
+        if (completed) {
+          widget.onVideoFinished();
+        }
+      },
+    );
     setState(() {});
   }
 
@@ -66,24 +62,24 @@ class _VideoPostState extends State<VideoPost>
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
     super.dispose();
+    player.dispose();
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
     if (info.visibleFraction == 1 &&
         !_isPaused &&
-        !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+        !player.state.playing) {
+      player.play();
     }
   }
 
   void _onTogglePause() {
-    if (_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.pause();
+    if (player.state.playing) {
+      player.pause();
       _animationController.reverse();
     } else {
-      _videoPlayerController.play();
+      player.play();
       _animationController.forward();
     }
     setState(() {
@@ -92,7 +88,7 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onCommentsTap(BuildContext context) async {
-    if (_videoPlayerController.value.isPlaying) {
+    if (player.state.playing) {
       _onTogglePause();
     }
     await showModalBottomSheet(
@@ -112,11 +108,10 @@ class _VideoPostState extends State<VideoPost>
       child: Stack(
         children: [
           Positioned.fill(
-            child: _videoPlayerController.value.isInitialized
-                ? VideoPlayer(_videoPlayerController)
-                : Container(
-                    color: Colors.black,
-                  ),
+            child: Video(
+              controller: controller,
+              controls: NoVideoControls,
+            )
           ),
           Positioned.fill(
             child: GestureDetector(
@@ -154,7 +149,7 @@ class _VideoPostState extends State<VideoPost>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 Text(
-                  "@니꼬",
+                  "Mooping",
                   style: TextStyle(
                     fontSize: Sizes.size20,
                     color: Colors.white,
@@ -184,7 +179,7 @@ class _VideoPostState extends State<VideoPost>
                   foregroundImage: NetworkImage(
                     "https://avatars.githubusercontent.com/u/3612017",
                   ),
-                  child: Text("니꼬"),
+                  child: Text("Mooping"),
                 ),
                 Gaps.v24,
                 const VideoButton(

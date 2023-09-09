@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() {
+  MediaKit.ensureInitialized();
   runApp(const TikTokApp());
 }
 

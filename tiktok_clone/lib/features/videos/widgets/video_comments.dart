@@ -75,7 +75,7 @@ class _VideoCommentsState extends State<VideoComments> {
                     children: [
                       const CircleAvatar(
                         radius: 18,
-                        child: Text("니꼬"),
+                        child: Text("Mooping"),
                       ),
                       Gaps.h10,
                       Expanded(
@@ -83,7 +83,7 @@ class _VideoCommentsState extends State<VideoComments> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '니꼬',
+                              'Mooping',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: Sizes.size14,
